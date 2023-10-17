@@ -72,7 +72,12 @@ FitBit Fitness Tracker Data on Kaggle in 18 CSV files. This dataset was generate
 
 **Applications used**:
 EXCEL and R
-I used Excel for the initial look at this data, utilizing pivot tables and Excel functions like AVERAGE, MIN, MAX. I then did some cleaning and verification of the data. I verified the start and end dates were consistent. I also noticed there were 33 IDs created, which implies there were some duplicate IDs created by a couple of users entering their info.
+I used Excel for the initial look at this data, utilizing pivot tables and Excel functions like AVERAGE, MIN, MAX. I then did some cleaning and verification of the data. 
+I used R to do more in depth analysis of the data and create some visualizations
+
+**EXCEL**
+**Cleaning and Verifying**
+I verified the start and end dates were consistent. I also noticed there were 33 IDs created, which implies there were some duplicate IDs created by a couple of users entering their info.
 
 Next, I examined the Weight log data and noticed a few inconsistencies.
 - Only 8 users logged weight
@@ -80,6 +85,20 @@ Next, I examined the Weight log data and noticed a few inconsistencies.
 - I then looked for blank cells utilizing the =COUNTBLANK(Range) function.
   - There were blank cells in the fat data column.
     - Because of this, I will not include the fat data.
+
+**Exploring and Analyzing**
+First was summaring some of the Data from the dailyActivity_merged table where I found the average, min and max of each coloumn
+|                        | TotalSteps | TotalDistance | TrackerDistance | LoggedActivitiesDistance | VeryActiveDistance | ModeratelyActiveDistance |
+|------------------------|------------|---------------|-----------------|---------------------------|--------------------|--------------------------|
+| Average                | 8319.7     | 6.0           | 6.0             | 3.1                       | 2.7                | 1.0                      |
+| Min                    | 4.0        | 0.0           | 0.0             | 2.0                       | 0.0                | 0.0                      |
+| Max                    | 36019.0    | 28.0          | 28.0            | 5.0                       | 21.9               | 6.5                      |
+
+|                         | LightActiveDistance | SedentaryActiveDistance | VeryActiveMinutes | FairlyActiveMinutes | LightlyActiveMinutes | SedentaryMinutes | Calories |
+|-------------------------|----------------------|-------------------------|-------------------|----------------------|-----------------------|------------------|----------|
+| Average                 | 3.7                  | 0.0                            | 37.5                    | 23.0                       | 211.8                       | 992.5                  | 2314.0   |
+| Min                        | 0.0                  | 0.0                            | 1.0                      | 1.0                         | 1.0                           | 2.0                     | 52.0       |
+| Max                       | 10.7                  | 0.1                            | 210.0                  | 143.0                     | 518.0                       | 1440.0                 | 4900.0   |
 
 To examine the integrity of the weight recording, I looked at the ‘IsManualReport’ column and used =1-COUNTIF(G2:G68, "false")/COUNTA(G2:G68) to see what percentage of the data was self-reported vs. being logged through one of the connected scale devices (TRUE).
 
@@ -90,10 +109,12 @@ I wanted to see what features people were using the least. To do so, I counted t
 The LoggedActivitiesDistance column represents the total kilometers from logged devices. Because only 32 entries were made for tracking distance (3% of total entries), this could indicate that users don’t always use the devices for distance training. Rather, it may be mainly used for other ‘non-distance’ related workouts/activities.
 
 I then did some basic analysis of the sleepDay_merged table, utilizing the AVERAGE, MIN, and MAX functions.
-- Minutes Asleep, Time in Bed, Hours Asleep, Hours in Bed
-  - Average: 419.4673123, 458.6392252, 7.0, 7.6
-  - Min: 58, 61, 1.0, 1.0
-  - Max: 796, 961, 13.3, 16.0
+|                 | Minutes Asleep | Time in Bed | Hours Asleep | Hours in Bed |
+|-----------------|----------------|-------------|--------------|-------------|
+| Average         | 419.4673123    | 458.6392252 | 7.0          | 7.6         |
+| Min             | 58             | 61          | 1.0          | 1.0         |
+| Max             | 796            | 961         | 13.3         | 16.0        |
+
 
 I used COUNT() to identify how many entries were made on the sleep table to examine the utilization of the sleep tracking feature. I noticed people used the sleep tracking function quite regularly, as about 46% of the possible entries for sleep data were used.
 - (30 days * 30 users) / COUNT(range)
@@ -129,3 +150,143 @@ They could use these numbers to help people set goals for calorie burn rates. If
 # R:
 
 I then went into R to continue my analysis of this dataset and see if I could find some more actionable insights.
+
+# Prepare:
+- Obtained the data set from Kaggle here
+- Determined credibility of data by examining total downloads, tags, and doing personal analysis
+- Some files were too large for Excel
+- Got familiar with all data by opening each CSV and checking out data
+- Some data wide, some data long
+- Verified Data to have 33 user IDs by counting distinct IDs
+  - Used SUM(1 / CountIF(Range, Range)
+- Examined Weight log data
+  - Only 8 users logged weight
+  - 61% was self-reported, meaning there could be bias if individuals lied for whatever reason.
+  - Has blank cells in fat data
+  - Ensured no blank cells (all good minus weight info)
+
+# Process:
+- Decided what data I wanted to use
+  - I will look at Daily data first to gain some overall insights into usage and use more intensive data later if needed
+- Duplicated the data and put it all together in a new worksheet to use easily and preserve the original
+- Started with Daily Activity
+  - Looked for unreliable people (lots of 0’s, otherwise known as missed days)
+  - Defined unreliable as missed more than 25% of days
+
+# Set up the working directory and load libraries
+```markdown
+```R
+# Create a new folder to house all my stuff
+dir.create("BellaBeat")
+# Set up BellaBeat as the working directory
+setwd("BellaBeat")
+
+# Load libraries
+library(tidyverse)
+library(dplyr)
+
+#Import and Structure Data
+```R
+# Create variables to make analyzing files easier
+activity <- read_csv("dailyActivity_merged.csv")
+calories <- read_csv("dailyCalories_merged.csv")
+sleep <- read_csv("sleepDay_merged.csv")
+weight <- read_csv("weightLogInfo_merged.csv")
+
+# Check out the data structures
+head(activity)
+head(calories)
+head(sleep)
+head(weight)
+
+# Change data types and rename columns
+activity <- activity %>%
+  mutate_at(vars(Id), as.character) %>%
+  mutate_at(vars(ActivityDate), as.Date, format = "%m/%d/%y") %>%
+  rename("Day" = "ActivityDate")
+
+sleep <- sleep %>%
+  mutate_at(vars(Id), as.character) %>%
+  mutate_at(vars(SleepDay), as.Date, format = "%m/%d/%y") %>%
+  rename("Day" = "SleepDay")
+
+weight <- weight %>%
+  mutate_at(vars(Id, LogId), as.character) %>%
+  mutate_at(vars(Date), as.Date, format = "%m/%d/%y") %>%
+  rename("Day" = "Date")
+
+# Summarize data
+summary(activity)
+summary(weight)
+
+# Create a new variable for summarization, excluding the Day column
+summary_subset <- activity %>%
+  select(-Day)
+summary(summary_subset)
+
+# Data Analysis
+```R
+# Join the data on Id, for activity and sleep to see if there is correlations
+merged_data <- inner_join(activity, sleep, by = "Id")
+# Calculate the correlation between TotalMinutesAsleep and Calories
+correlation <- cor(merged_data$TotalMinutesAsleep, merged_data$Calories)
+
+# Print the correlation coefficient
+cat("Correlation between TotalMinutesAsleep and Calories:", correlation)
+
+# Load the ggplot2 library if not already loaded
+library(ggplot2)
+
+# Create a scatterplot to demonstrate correlation
+ggplot(data = merged_data, aes(x = TotalMinutesAsleep, y = Calories)) +
+  geom_point() +
+  labs(x = "Total Minutes Asleep", y = "Calories Burned") +
+  ggtitle("Scatterplot of Total Minutes Asleep vs. Calories Burned")
+
+# Create a scatterplot for each ID
+correlation_data <- merged_data %>%
+  group_by(Id) %>%
+  summarize(Correlation = ifelse(sd(TotalMinutesAsleep) == 0 | sd(Calories) == 0, 0, cor(TotalMinutesAsleep, Calories)))
+
+# Create a scatterplot of the correlations between Minutes asleep and Calories burned by each ID
+ggplot(data = merged_data, aes(x = Id, y = TotalMinutesAsleep)) +
+  geom_point() +
+  labs(aes(x = "ID", y = "Correlation (Sleep vs. Calories)", color = Id)) +
+  ggtitle("Correlation between Sleep and Calories for Each ID")
+
+# Create a scatterplot of TotalMinutesAsleep vs. Calories
+# Smooth data for better readability
+ggplot(data = merged_data, aes(x = TotalMinutesAsleep, y = Calories)) +
+  geom_point() +
+  labs(x = "Total Minutes Asleep", y = "Calories Burned") +
+  ggtitle("Scatterplot of Total Minutes Asleep vs. Calories Burned") +
+  geom_smooth(method = "loess", se = FALSE)
+
+# Plot the mean calories burned per sleep time
+aggregated_data <- merged_data %>%
+  group_by(TotalMinutesAsleep)
+  
+aggregated_data <- aggregated_data %>%
+  summarize(MeanCalories = mean(Calories))
+
+ggplot(data = aggregated_data, aes(x = TotalMinutesAsleep, y = MeanCalories)) +
+  geom_point(color = '#4d00fa') +
+  labs(x = "Total Minutes Asleep", y = "Mean Calories Burned") +
+  ggtitle("Average Calories Burned vs. Total Minutes Asleep")
+
+# Create a new column "DayOfWeek" in the "activity" dataframe by formatting the "Day" column
+activity <- activity %>%
+  mutate(DayOfWeek = format(Day, "%A"))
+
+# Summarize the mean steps for each day of the week
+steps_summary  <- activity %>%
+  group_by(DayOfWeek) %>%
+  summarise(MeanSteps = mean(TotalSteps))
+
+# Create a bar graph to visualize the average steps by day of the week
+ggplot(data = steps_summary, aes(x = DayOfWeek, y = MeanSteps)) +
+  geom_bar(stat = "identity", fill = '#4d00fa') +
+  labs(x = "Day of the Week", y = "Mean Steps") +
+  ggtitle("Average Steps by Day of the Week") + 
+  geom_text(aes(label = MeanSteps), vjust = -0.5, color = "black", size = 3)
+
