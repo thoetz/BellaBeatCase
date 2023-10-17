@@ -1,4 +1,7 @@
 # BellaBeatCase
+
+
+
 # Prepare:
 
 - Obtained the data set from [Kaggle](insert_kaggle_link_here)
@@ -294,3 +297,22 @@ Now examining the average sleep duration in minutes for each day of the week we 
 Lastly I examined the average steps by day of the week. Users tend to be most active with their steps on Sundays and Thursdays with Thursdays being the highest at 8152.97 per day. However from this data we can conclude that the average user even on their best day is not meeting the average step count recommended for weight loss by the CDC which is 10000 steps. To achieve significant weight loss through walking, you may need to set higher step count goals, such as 12,000 to 15,000 steps per day or more (womens health). 
  
 [![avg steps day of week](avg steps day of week.png)](https://github.com/thoetz/BellaBeatCase/blob/16e9cc33f117d192937344322535d1c1b721288e/avg%20steps%20day%20of%20week.png)https://github.com/thoetz/BellaBeatCase/blob/16e9cc33f117d192937344322535d1c1b721288e/avg%20steps%20day%20of%20week.png
+
+# Act
+
+From my findings I have come up with several suggestions for the BellaBeat marketing team. 
+
+1. **Diversify Marketing Messages for Device Usage**: Given that only 3% of users recorded distance-related activities, it's essential to diversify marketing messages. Emphasize the versatility of Bellabeat's smart devices beyond distance training, promoting their use in a wide range of activities and workouts. Highlight features that cater to different fitness preferences and goals, such as yoga, strength training, and mindfulness exercises.
+
+2. **Personalized Goals for Calorie Burn Rates**: Utilize the insights provided in Table 2 to help users set personalized goals for calorie burn rates. The data shows how calorie burn correlates with different activity thresholds. Bellabeat's app could suggest specific activity goals to users based on their profiles, encouraging them to "get up and move" or "add a few more minutes to achieve their calorie burn goal." Tailoring these recommendations to individual fitness levels and preferences can motivate users to stay active.
+
+3. **Focus on Sleep Quality and Consistency**: While the correlation between TotalMinutesAsleep and Calories is relatively low, Bellabeat can still encourage better sleep as part of a holistic wellness approach. Emphasize the importance of consistent sleep patterns, targeting 5 to 7 hours of sleep per night. This can be framed as a strategy to maintain consistent calorie burn rates throughout the day, even though causation is not proven.
+
+4. **Utilize Day-of-the-Week Insights**: Leverage the day-of-the-week insights to send sleep and wellness reminders to users. For example, consider sending sleep reminders on Sundays to prepare individuals for the upcoming week, focusing on stress management and relaxation techniques. Send wellness tips and motivation on Thursdays to help users maintain their activity levels.
+
+5. **Promote Higher Step Counts for Weight Loss**: Since the data suggests that even on their most active days, users do not meet the CDC's recommended step count for weight loss, Bellabeat can create a marketing campaign around setting and achieving higher step count goals. Promote the benefits of walking more, reaching at least 10,000 steps daily, and provide additional guidance on how users can gradually increase their daily step count to achieve their weight loss goals. Consider using slogans like "Step Your Way to a Healthier You."
+
+6. **Introduce Challenges and Community Engagement**: Encourage users to increase their activity levels by introducing challenges or community engagement features within the Bellabeat app. These can include step challenges, activity streaks, or virtual races that motivate users to exceed their daily step counts and stay consistently active. Building a supportive and engaging community can help users reach their fitness goals together.
+
+7. **Educational Content**: Develop and promote educational content within the app and on Bellabeat's website. Offer articles, tips, and resources on sleep hygiene, effective workouts, maintaining calorie balance, and other topics related to health and wellness. BellaBeat can use the data from their user base to create more insights and educational content to share with their community. Informed users are more likely to make positive lifestyle changes.
+
