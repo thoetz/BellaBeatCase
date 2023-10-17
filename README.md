@@ -123,7 +123,7 @@ I used COUNT() to identify how many entries were made on the sleep table to exam
 Last, in Excel, I wanted to examine the relationship between Very Active Minutes and Average Calories burned by the users. To do so, I created a pivot table from the dailyActivity_merged table. I then used VeryActiveMinutes as my rows and Average of Calories burned for my values. I grouped my VeryActiveMinutes data in increments of 10 to identify if there were any patterns or thresholds for where calories burned substantially increased per active minute.
 
 My findings, however, were as expected: More Very active minutes means more calories. Makes sense! Based on our user's data to meet the daily 2500 calorie burn rate, which is recommended by the CDC for users in the weight class of 72 kg, you should do a little more than 50 min of exercise. Users below the threshold of 50 minutes did not burn an average of 2500 calories a day. See table below for breakdown:
-
+**Table 2**
 | Very Active Minutes | Average of Calories |
 | ------------------- | ------------------- |
 | 0-9                | 2028.75             |
@@ -150,28 +150,6 @@ They could use these numbers to help people set goals for calorie burn rates. If
 # R:
 
 I then went into R to continue my analysis of this dataset and see if I could find some more actionable insights.
-
-# Prepare:
-- Obtained the data set from Kaggle here
-- Determined credibility of data by examining total downloads, tags, and doing personal analysis
-- Some files were too large for Excel
-- Got familiar with all data by opening each CSV and checking out data
-- Some data wide, some data long
-- Verified Data to have 33 user IDs by counting distinct IDs
-  - Used SUM(1 / CountIF(Range, Range)
-- Examined Weight log data
-  - Only 8 users logged weight
-  - 61% was self-reported, meaning there could be bias if individuals lied for whatever reason.
-  - Has blank cells in fat data
-  - Ensured no blank cells (all good minus weight info)
-
-# Process:
-- Decided what data I wanted to use
-  - I will look at Daily data first to gain some overall insights into usage and use more intensive data later if needed
-- Duplicated the data and put it all together in a new worksheet to use easily and preserve the original
-- Started with Daily Activity
-  - Looked for unreliable people (lots of 0’s, otherwise known as missed days)
-  - Defined unreliable as missed more than 25% of days
 
 # Set up the working directory and load libraries
 ```markdown
@@ -290,3 +268,29 @@ ggplot(data = steps_summary, aes(x = DayOfWeek, y = MeanSteps)) +
   ggtitle("Average Steps by Day of the Week") + 
   geom_text(aes(label = MeanSteps), vjust = -0.5, color = "black", size = 3)
 
+```
+# Share
+
+The LoggedActivitiesDistance column represents total kilometers from logged devices. Because Only 32 entries were made for tracking distance (3% of total entries). This could indicate that users don’t always use the devices for distance training. Rather it may be mainly its used for other ‘non distance’ related workouts/activities.
+
+If you refer to table 2 we can see the calories burned at different thresholds of activity levels.
+BellaBeat could use these numbers to help people set goals for calorie burn rates. If you do x minutes you should burn Y calories “get up and move” or “10 more minutes and you will hit your goal”
+
+Correlation between TotalMinutesAsleep and Calories: 0.02253083. this was surprisingly low. I assumed those who got better sleep may be more active during the day and burn more calories. 
+
+Examining the correlation between these two variables further we can see the correlation for each ID represented on this plot. 
+![Sleep vs Calories Correlation](Sleep vs Calories Correlation.png)
+
+
+Next analyzing the calories burned With the exception of a few unusual cases, individuals who slept for durations ranging from 5 to 7 hours appeared to burn calories most consistently as the plot demonstrates a large grouping in the middle. However with such a low correlation we cant determine that one directly affects the other. However we can hypothesize that encouraging consistent sleep for 5-7 hours may help keep calorie burn rates consistent as well.
+
+![Calories Burned vs Sleep minutes](Calories Burned vs Sleep minutes.png)
+ 
+
+Now examining the average sleep duration in minutes for each day of the week we can notice that Sundays seem to be the lowest with Fridays being the highest. This could be used by the marketing team to send out sleep reminders on Sundays to prepare individuals for the week ahead. 
+
+![Avg Sleep Day of Week](Avg Sleep Day of Week.png)
+ 
+Lastly I examined the average steps by day of the week. Users tend to be most active with their steps on Sundays and Thursdays with Thursdays being the highest at 8152.97 per day. However from this data we can conclude that the average user even on their best day is not meeting the average step count recommended for weight loss by the CDC which is 10000 steps. To achieve significant weight loss through walking, you may need to set higher step count goals, such as 12,000 to 15,000 steps per day or more (womens health). 
+ 
+![avg steps day of week](avg steps day of week.png)
