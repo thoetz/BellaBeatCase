@@ -279,18 +279,18 @@ BellaBeat could use these numbers to help people set goals for calorie burn rate
 Correlation between TotalMinutesAsleep and Calories: 0.02253083. this was surprisingly low. I assumed those who got better sleep may be more active during the day and burn more calories. 
 
 Examining the correlation between these two variables further we can see the correlation for each ID represented on this plot. 
-![Sleep vs Calories Correlation](Sleep vs Calories Correlation.png)
+Sleep vs Calories Correlation.png
 
 
 Next analyzing the calories burned With the exception of a few unusual cases, individuals who slept for durations ranging from 5 to 7 hours appeared to burn calories most consistently as the plot demonstrates a large grouping in the middle. However with such a low correlation we cant determine that one directly affects the other. However we can hypothesize that encouraging consistent sleep for 5-7 hours may help keep calorie burn rates consistent as well.
 
-![Calories Burned vs Sleep minutes](Calories Burned vs Sleep minutes.png)
+[![Calories Burned vs Sleep minutes](Calories Burned vs Sleep minutes.png)](https://github.com/thoetz/BellaBeatCase/blob/16e9cc33f117d192937344322535d1c1b721288e/Calories%20Burned%20vs%20Sleep%20minutes.png)
  
 
 Now examining the average sleep duration in minutes for each day of the week we can notice that Sundays seem to be the lowest with Fridays being the highest. This could be used by the marketing team to send out sleep reminders on Sundays to prepare individuals for the week ahead. 
 
-![Avg Sleep Day of Week](Avg Sleep Day of Week.png)
+[![Avg Sleep Day of Week](Avg Sleep Day of Week.png)](https://github.com/thoetz/BellaBeatCase/blob/main/Avg%20Sleep%20Day%20of%20Week.png)
  
 Lastly I examined the average steps by day of the week. Users tend to be most active with their steps on Sundays and Thursdays with Thursdays being the highest at 8152.97 per day. However from this data we can conclude that the average user even on their best day is not meeting the average step count recommended for weight loss by the CDC which is 10000 steps. To achieve significant weight loss through walking, you may need to set higher step count goals, such as 12,000 to 15,000 steps per day or more (womens health). 
  
-![avg steps day of week](avg steps day of week.png)
+[![avg steps day of week](avg steps day of week.png)](https://github.com/thoetz/BellaBeatCase/blob/16e9cc33f117d192937344322535d1c1b721288e/avg%20steps%20day%20of%20week.png)https://github.com/thoetz/BellaBeatCase/blob/16e9cc33f117d192937344322535d1c1b721288e/avg%20steps%20day%20of%20week.png
