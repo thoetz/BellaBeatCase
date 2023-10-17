@@ -184,8 +184,8 @@ setwd("BellaBeat")
 # Load libraries
 library(tidyverse)
 library(dplyr)
-
-#Import and Structure Data
+```
+# Import and Structure Data
 ```R
 # Create variables to make analyzing files easier
 activity <- read_csv("dailyActivity_merged.csv")
@@ -223,7 +223,7 @@ summary(weight)
 summary_subset <- activity %>%
   select(-Day)
 summary(summary_subset)
-
+```
 # Data Analysis
 ```R
 # Join the data on Id, for activity and sleep to see if there is correlations
